@@ -1,29 +1,38 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
+import { getTrendingMovies } from '../servises/articlesApi'
+import { useState, useEffect } from "react"
 
 const HomePage = () => {
-  console.log('HomePage');
-  return (
-    <ul>
-      <li>
-        <Link to="/Футболки">Футболки</Link>
-      </li>
-      <li>
-        <Link to="/Рубашки">Рубашки</Link>
-      </li>
-      <li>
-        <Link to="/Брюки">Брюки</Link>
-      </li>
-      <li>
-        <Link to="/Костюмы">Костюмы</Link>
-      </li>
-      <li>
-        <Link to="/Аксесуары">Аксесуары</Link>
-      </li>
-      <li>
-        <Link to="/Ремни">Ремни</Link>
-      </li>
-    </ul>
-  );
-};
+
+  const [data, setData] = useState([])
+  const location = useLocation()
+    
+    const getMovies = async () => {
+        try {
+            const data = await getTrendingMovies()
+            setData(data.results)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getMovies()
+    }, [])
+  
+    return (
+          <ul >
+        {data.map(mov => (
+        <li key = {mov.id}> 
+            <Link to={{
+                pathname: `movies/${mov.id}`,
+                state: {from: location}}} >
+                <p  >{mov.title}</p>
+            </Link>
+          </li>
+          ))}
+        </ul>
+    )
+}
 
 export default HomePage;
