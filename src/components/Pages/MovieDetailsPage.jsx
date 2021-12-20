@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getMovieById } from '../servises/articlesApi';
 import Cast from './Cast';
 import Reviews from './Reviews';
+import styles from './Pages.module.css'
 
 
 
@@ -34,11 +35,13 @@ console.log(data.genres);
 
   return (
     <>
-        {data && (<> <img
+      {data && (<div className={styles.item} >
+        <img
             src={`https://image.tmdb.org/t/p/w300${data.poster_path}`}
             alt=""
-
-                />
+className={styles.itemImg}
+        />
+        <div className={styles.itemText}>
         <h2>{data.original_title}</h2>
         <p>User score: { data.vote_average}</p>
         <h3>Overview</h3>
@@ -47,7 +50,8 @@ console.log(data.genres);
         
 
         {data.genres && <p>{data.genres.map((genre) => genre.name).join(", ")}</p>}
-         </>
+        </div>
+        </div>
          )}
 
 <h4>Additional information</h4>
